@@ -5,10 +5,20 @@ import Head from "next/head";
 import Link from "next/link";
 import UltimosPosts from "@/components/UltimosPosts";
 
+// Define la interfaz Proyecto para evitar el uso de "any"
+interface Proyecto {
+  id: number;
+  title: string;
+  slug: string;
+  description: string;
+  image_url?: string;
+  link?: string;
+}
+
 const PROYECTOS_POR_PAGINA = 9;
 
 const TodosLosProyectos = () => {
-  const [proyectos, setProyectos] = useState<any[]>([]);
+  const [proyectos, setProyectos] = useState<Proyecto[]>([]); // Usa la interfaz Proyecto
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,7 +44,7 @@ const TodosLosProyectos = () => {
   }, []);
 
   // Filtrado de proyectos por título
-  const filteredProyectos = proyectos.filter((proyecto: any) =>
+  const filteredProyectos = proyectos.filter((proyecto) =>
     proyecto.title?.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -61,7 +71,6 @@ const TodosLosProyectos = () => {
       </div>
     );
   }
-
 
   return (
     <>
@@ -175,11 +184,9 @@ const TodosLosProyectos = () => {
         </div>
       </section>
       <section id="blog" className="py-20 px-6 bg-gray-100">
-          <UltimosPosts />
-        </section>
+        <UltimosPosts />
+      </section>
     </>
-
-    
   );
 };
 
