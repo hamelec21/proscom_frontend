@@ -3,16 +3,31 @@
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 
+// Definimos las interfaces para los tipos de datos
+interface Post {
+  id: number;
+  title: string;
+  excerpt: string;
+  image_url?: string;
+  category_id: number;
+  slug: string;
+}
+
+interface Category {
+  id: number;
+  name: string;
+}
+
 const POSTS_PER_PAGE = 12;
 
 const TodosLosPosts = () => {
-  const [posts, setPosts] = useState<any[]>([]);
-  const [categories, setCategories] = useState<any[]>([]); // arreglo de categorías (id, name)
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [isClient, setIsClient] = useState(false);
 
   const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -26,7 +41,7 @@ const TodosLosPosts = () => {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/posts`
         );
-        const data = await response.json();
+        const data: Post[] = await response.json();
         setPosts(data);
       } catch (error) {
         console.error("Error al obtener los posts:", error);
@@ -45,7 +60,7 @@ const TodosLosPosts = () => {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/categories`
         );
-        const data = await response.json();
+        const data: Category[] = await response.json();
         setCategories(data);
       } catch (error) {
         console.error("Error al obtener las categorías:", error);
@@ -59,7 +74,7 @@ const TodosLosPosts = () => {
     return null;
   }
 
-  const filteredPosts = posts.filter((post: any) => {
+  const filteredPosts = posts.filter((post) => {
     const matchCategory = selectedCategory
       ? post.category_id === parseInt(selectedCategory)
       : true;
@@ -140,7 +155,7 @@ const TodosLosPosts = () => {
               className="border px-3 py-2 rounded w-full md:w-1/3"
             >
               <option value="">Todas las categorías</option>
-              {categories.map((cat: any) => (
+              {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.name}
                 </option>
@@ -157,9 +172,9 @@ const TodosLosPosts = () => {
 
           {/* Posts */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {paginatedPosts.map((post, index) => (
+            {paginatedPosts.map((post) => (
               <div
-                key={index}
+                key={post.id}
                 className="bg-white rounded-lg shadow-lg overflow-hidden"
               >
                 {post.image_url && (
@@ -171,7 +186,11 @@ const TodosLosPosts = () => {
                 )}
                 <div className="p-6 text-left">
                   <h3 className="text-xl font-semibold mb-4">{post.title}</h3>
-                  <p className="text-gray-700 mb-4">{post.excerpt.length > 65 ? `${post.excerpt.slice(0, 65)}...` : post.excerpt}</p>
+                  <p className="text-gray-700 mb-4">
+                    {post.excerpt.length > 65
+                      ? `${post.excerpt.slice(0, 65)}...`
+                      : post.excerpt}
+                  </p>
                   <a
                     href={`/blog/${post.slug}`}
                     className="text-blue-600 hover:underline"
