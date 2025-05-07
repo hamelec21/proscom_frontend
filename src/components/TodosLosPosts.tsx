@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
+import Image from "next/image"; // Importamos el componente Image
+import Link from "next/link";   // Importamos Link para la navegación
 
 // Definimos las interfaces para los tipos de datos
 interface Post {
@@ -178,9 +180,11 @@ const TodosLosPosts = () => {
                 className="bg-white rounded-lg shadow-lg overflow-hidden"
               >
                 {post.image_url && (
-                  <img
+                  <Image
                     src={post.image_url}
                     alt={`Imagen del post ${post.title}`}
+                    width={500}  // Ajusta el ancho según sea necesario
+                    height={300} // Ajusta la altura según sea necesario
                     className="w-full h-48 object-cover"
                   />
                 )}
@@ -191,12 +195,9 @@ const TodosLosPosts = () => {
                       ? `${post.excerpt.slice(0, 65)}...`
                       : post.excerpt}
                   </p>
-                  <a
-                    href={`/blog/${post.slug}`}
-                    className="text-blue-600 hover:underline"
-                  >
-                    Leer más
-                  </a>
+                  <Link href={`/blog/${post.slug}`}>
+                    <a className="text-blue-600 hover:underline">Leer más</a>
+                  </Link>
                 </div>
               </div>
             ))}
