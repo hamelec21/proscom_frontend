@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Link from "next/link"; // 👈 Importar Link de Next.js
+import Link from "next/link";
+import Image from "next/image";
 
 interface Post {
   id: number;
@@ -57,11 +58,14 @@ const UltimosPosts: React.FC = () => {
           {posts.map((post) => (
             <div key={post.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
               {post.image_url && (
-                <img
-                  src={post.image_url}
-                  alt={post.title}
-                  className="w-full h-48 object-cover"
-                />
+                <div className="relative w-full h-48">
+                  <Image
+                    src={post.image_url}
+                    alt={post.title}
+                    layout="fill"
+                    objectFit="cover"
+                  />
+                </div>
               )}
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-4">{post.title}</h3>
@@ -70,8 +74,8 @@ const UltimosPosts: React.FC = () => {
                     ? `${post.excerpt.slice(0, 65)}...`
                     : post.excerpt}
                 </p>
-                <Link href={`/blog/${post.slug}`} className="text-blue-600 hover:underline">
-                  Leer más
+                <Link href={`/blog/${post.slug}`}>
+                  <a className="text-blue-600 hover:underline">Leer más</a>
                 </Link>
               </div>
             </div>
@@ -79,11 +83,10 @@ const UltimosPosts: React.FC = () => {
         </div>
 
         <div className="mt-10">
-          <Link
-            href="/blog"
-            className="px-8 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg shadow-lg transition duration-300"
-          >
-            Ver todos los artículos
+          <Link href="/blog">
+            <a className="px-8 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg shadow-lg transition duration-300">
+              Ver todos los artículos
+            </a>
           </Link>
         </div>
       </div>
