@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Link from "next/link"; // 👈 Importar Link de Next.js
 
-// Definir los tipos para los datos de cada post
 interface Post {
   id: number;
   title: string;
@@ -12,21 +12,19 @@ interface Post {
 }
 
 const UltimosPosts: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);  // Tipo de posts como array de Post
-  const [loading, setLoading] = useState<boolean>(true);  // Tipo de loading como booleano
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`);
-        
+
         if (!response.ok) {
           throw new Error("Error al obtener los posts");
         }
 
-        const data: Post[] = await response.json(); // Asegúrate de que la respuesta sea de tipo Post[]
-
-        // Ordena los posts por id de manera descendente y luego toma los últimos 3
+        const data: Post[] = await response.json();
         setPosts(data.sort((a, b) => b.id - a.id).slice(0, 3));
       } catch (error) {
         console.error("Error al obtener los posts:", error);
@@ -67,25 +65,26 @@ const UltimosPosts: React.FC = () => {
               )}
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-4">{post.title}</h3>
-                <p className="text-gray-700 mb-4"> {post.excerpt.length > 65 ? `${post.excerpt.slice(0, 65)}...` : post.excerpt}</p>
-                <a
-                  href={`/blog/${post.slug}`}
-                  className="text-blue-600 hover:underline"
-                >
+                <p className="text-gray-700 mb-4">
+                  {post.excerpt.length > 65
+                    ? `${post.excerpt.slice(0, 65)}...`
+                    : post.excerpt}
+                </p>
+                <Link href={`/blog/${post.slug}`} className="text-blue-600 hover:underline">
                   Leer más
-                </a>
+                </Link>
               </div>
             </div>
           ))}
         </div>
 
         <div className="mt-10">
-          <a
+          <Link
             href="/blog"
             className="px-8 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg shadow-lg transition duration-300"
           >
             Ver todos los artículos
-          </a>
+          </Link>
         </div>
       </div>
     </section>
