@@ -50,6 +50,7 @@ export default function Contacto() {
         setStatus('Hubo un error al enviar el mensaje.');
       }
     } catch (error) {
+      console.error('Error al enviar el mensaje:', error); // <--- Uso de `error`
       setStatus('Error al enviar el mensaje. Intenta de nuevo.');
     } finally {
       setIsSubmitting(false);
