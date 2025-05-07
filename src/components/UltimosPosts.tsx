@@ -20,11 +20,9 @@ const UltimosPosts: React.FC = () => {
     const fetchPosts = async () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`);
-
         if (!response.ok) {
           throw new Error("Error al obtener los posts");
         }
-
         const data: Post[] = await response.json();
         setPosts(data.sort((a, b) => b.id - a.id).slice(0, 3));
       } catch (error) {
@@ -62,8 +60,8 @@ const UltimosPosts: React.FC = () => {
                   <Image
                     src={post.image_url}
                     alt={post.title}
-                    layout="fill"
-                    objectFit="cover"
+                    fill
+                    style={{ objectFit: "cover" }}
                   />
                 </div>
               )}
@@ -74,8 +72,11 @@ const UltimosPosts: React.FC = () => {
                     ? `${post.excerpt.slice(0, 65)}...`
                     : post.excerpt}
                 </p>
-                <Link href={`/blog/${post.slug}`}>
-                  <a className="text-blue-600 hover:underline">Leer más</a>
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="text-blue-600 hover:underline"
+                >
+                  Leer más
                 </Link>
               </div>
             </div>
@@ -83,10 +84,11 @@ const UltimosPosts: React.FC = () => {
         </div>
 
         <div className="mt-10">
-          <Link href="/blog">
-            <a className="px-8 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg shadow-lg transition duration-300">
-              Ver todos los artículos
-            </a>
+          <Link
+            href="/blog"
+            className="px-8 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg shadow-lg transition duration-300"
+          >
+            Ver todos los artículos
           </Link>
         </div>
       </div>
