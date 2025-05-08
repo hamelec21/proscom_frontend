@@ -66,21 +66,23 @@ const UltimosPosts: React.FC = () => {
                     src={post.image_url}
                     alt={post.title}
                     fill
-                    style={{ objectFit: "cover" }}
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 33vw"
                   />
                 </div>
               )}
-              <div className="p-6">
+              <div className="p-6 text-left">
                 <h3 className="text-xl font-semibold mb-4">{post.title}</h3>
                 <p className="text-gray-700 mb-4">
                   {post.excerpt.length > 65
                     ? `${post.excerpt.slice(0, 65)}...`
                     : post.excerpt}
                 </p>
-                <Link href={`/blog/${post.slug}`}>
-                  <span className="text-blue-600 hover:underline">
-                    Leer más
-                  </span>
+                <Link
+                  href={`/blog/${post.slug}`}
+                  className="text-blue-600 hover:underline"
+                >
+                  Leer más
                 </Link>
               </div>
             </div>
