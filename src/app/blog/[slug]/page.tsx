@@ -38,8 +38,8 @@ export default async function PostDetailPage({
 }: {
   params: { slug: string };
 }) {
-  // Esperamos a que los params se resuelvan
-  const { slug } = await params; // Esto asegura que los parámetros son resueltos antes de ser utilizados.
+  // El valor de 'params' ya está disponible, no es necesario 'await'
+  const { slug } = params;
 
   // Obtiene el post según el slug
   const post = await getPost(slug);
