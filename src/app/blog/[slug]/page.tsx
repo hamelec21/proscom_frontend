@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import { ShareButton } from "@/components/ShareButton";
-import { Metadata } from "next";
 
 // Interfaz del post
 interface Post {
@@ -37,15 +36,6 @@ async function getPost(slug: string): Promise<Post | null> {
 type Props = {
   params: { slug: string };
 };
-
-// Metadatos dinámicos (opcional)
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = await getPost(params.slug);
-  return {
-    title: post?.title || "Post no encontrado",
-    description: post?.excerpt || "",
-  };
-}
 
 // Página de detalle del post
 export default async function PostDetailPage({ params }: Props) {
