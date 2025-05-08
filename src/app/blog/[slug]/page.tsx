@@ -1,3 +1,5 @@
+// app/blog/[slug]/page.tsx
+
 import { notFound } from "next/navigation";
 import { ShareButton } from "@/components/ShareButton";
 
@@ -10,16 +12,22 @@ interface Post {
   slug: string;
 }
 
-// Función para limpiar las etiquetas <p> del body (si se desea)
-function cleanBody(body: string): string {
-  return body.replace(/<\/?p>/g, ""); // elimina solo las etiquetas <p> y </p>
+interface PageProps {
+  params: {
+    slug: string;
+  };
 }
 
-// Función para obtener el post
+// Limpia etiquetas <p> del contenido HTML
+function cleanBody(body: string): string {
+  return body.replace(/<\/?p>/g, "");
+}
+
+// Obtiene un post específico por su slug
 async function getPost(slug: string): Promise<Post | null> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${slug}`, {
-      cache: "no-store",  // Desactiva la caché si es necesario
+      next: { revalidate: 60 }, // Revalida cada 60 segundos (ISR)
     });
 
     if (!res.ok) return null;
@@ -31,20 +39,32 @@ async function getPost(slug: string): Promise<Post | null> {
   }
 }
 
-// Página para el detalle del post
-export default async function PostDetailPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+// Genera rutas estáticas para los posts
+export async function generateStaticParams() {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`);
+    const posts: Post[] = await res.json();
+
+    return posts.map((post) => ({
+      slug: post.slug,
+    }));
+  } catch (error) {
+    console.error("Error al generar rutas estáticas:", error);
+    return [];
+  }
+}
+
+// Marca esta página como generada estáticamente con ISR
+export const dynamicParams = true;
+
+export default async function PostDetailPage({ params }: PageProps) {
   const post = await getPost(params.slug);
 
   if (!post) {
-    notFound(); // Si no se encuentra el post, se redirige a una página 404
+    notFound(); // Redirige a /404
     return null;
   }
 
-  // Limpiar el contenido si es necesario
   const cleanContent = cleanBody(post.body);
 
   return (
@@ -59,13 +79,11 @@ export default async function PostDetailPage({
         />
       )}
 
-      {/* Renderizar el contenido del body */}
       <article
         className="text-lg text-gray-700 mb-6 prose prose-lg max-w-none text-justify"
         dangerouslySetInnerHTML={{ __html: cleanContent }}
       />
 
-      {/* Botón para compartir */}
       <ShareButton title={post.title} excerpt={post.excerpt} slug={post.slug} />
     </section>
   );
