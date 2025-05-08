@@ -8,26 +8,28 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-   "moduleResolution": "node",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "baseUrl": ".",  // ✅ necesario con "paths"
+    "paths": {
+      "@/*": ["./src/*"]
+    },
     "plugins": [
       {
         "name": "next"
       }
-    ],
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    ]
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/components/UltimosPosts.tsx"
+    "app",     // ✅ importante para App Router
+    "src"
   ],
   "exclude": ["node_modules"]
 }

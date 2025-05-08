@@ -12,6 +12,13 @@ interface Post {
   slug: string;
 }
 
+// Interfaz de los props (✅ aquí está la corrección clave)
+interface PostDetailPageProps {
+  params: {
+    slug: string;
+  };
+}
+
 // Limpia las etiquetas <p> del contenido HTML
 function cleanBody(body: string): string {
   return body.replace(/<\/?p>/g, "");
@@ -34,22 +41,16 @@ async function getPost(slug: string): Promise<Post | null> {
 }
 
 // Página dinámica de detalle del post
-export default async function PostDetailPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const { slug } = params; // Extraemos el slug de los params
+export default async function PostDetailPage({ params }: PostDetailPageProps) {
+  const { slug } = params;
 
-  // Obtenemos el post usando el slug
   const post = await getPost(slug);
 
   if (!post) {
-    notFound(); // Si el post no existe, redirige a la página 404
+    notFound();
     return null;
   }
 
-  // Limpiar el contenido HTML del post
   const cleanContent = cleanBody(post.body);
 
   return (
@@ -73,3 +74,4 @@ export default async function PostDetailPage({
     </section>
   );
 }
+
