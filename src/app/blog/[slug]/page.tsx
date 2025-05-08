@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { ShareButton } from "@/components/ShareButton";
 
+// Interfaz del post
 interface Post {
   id: number;
   title: string;
@@ -31,33 +32,17 @@ async function getPost(slug: string): Promise<Post | null> {
   }
 }
 
-// Genera rutas estáticas para los slugs
-export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`);
-    const posts: Post[] = await res.json();
-
-    return posts.map((post) => ({
-      slug: post.slug,
-    }));
-  } catch (error) {
-    console.error("Error al generar rutas estáticas:", error);
-    return [];
-  }
-}
-
 // Página dinámica de detalle del post
-type PostDetailPageProps = {
-  params: {
-    slug: string;
-  };
-};
-
-export default async function PostDetailPage({ params }: PostDetailPageProps) {
+export default async function PostDetailPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  // Obtiene el post según el slug
   const post = await getPost(params.slug);
 
   if (!post) {
-    notFound();
+    notFound(); // Si no se encuentra el post, redirige a la página 404
     return null;
   }
 
