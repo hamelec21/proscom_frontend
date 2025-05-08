@@ -1,7 +1,7 @@
-import { notFound } from "next/navigation";
-import { ShareButton } from "@/components/ShareButton";
+// app/blog/[slug]/page.tsx
+import { notFound } from 'next/navigation';
+import { ShareButton } from '@/components/ShareButton';
 
-// Interfaz del post
 interface Post {
   id: number;
   title: string;
@@ -11,12 +11,12 @@ interface Post {
   slug: string;
 }
 
-// Limpia etiquetas <p> del contenido HTML
+// Función para limpiar el contenido del post (por ejemplo, etiquetas <p>)
 function cleanBody(body: string): string {
   return body.replace(/<\/?p>/g, "");
 }
 
-// Obtiene un post específico por su slug
+// Función para obtener el post desde la API
 async function getPost(slug: string): Promise<Post | null> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${slug}`, {
@@ -27,29 +27,18 @@ async function getPost(slug: string): Promise<Post | null> {
 
     return res.json();
   } catch (error) {
-    console.error("Error al obtener el post:", error);
+    console.error('Error al obtener el post:', error);
     return null;
   }
 }
 
-// Generación de parámetros estáticos para las rutas dinámicas
-export const generateStaticParams = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`);
-  const posts: Post[] = await res.json();
-
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
-};
-
-// Página dinámica de detalle del post
+// Página de detalle del post
 export default async function PostDetailPage({
   params,
 }: {
-  params: { slug: string };  // Asegúrate de que params sea un objeto con slug
+  params: { slug: string };
 }) {
-  // Obtiene el post según el slug
-  const post = await getPost(params.slug);
+  const post = await getPost(params.slug); // Aquí usamos el slug desde params
 
   if (!post) {
     notFound(); // Si no se encuentra el post, redirige a la página 404
