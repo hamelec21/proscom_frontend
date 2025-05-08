@@ -95,14 +95,14 @@ const UltimosProyectos: React.FC = () => {
                   </p>
                   <div className="flex flex-col gap-2 md:flex-row md:justify-between ">
                     {proyecto.link && (
-                      <a
+                      <Link
                         href={proyecto.link}
                         className="text-blue-600 hover:underline"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
                         Ver externo
-                      </a>
+                      </Link>
                     )}
                     <Link
                       href={`/proyectos/${proyecto.slug}`} // 👈 Ahora usa slug

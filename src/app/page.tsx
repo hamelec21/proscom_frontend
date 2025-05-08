@@ -111,11 +111,11 @@ export default function Home() {
             </p>
 
             <div className="flex justify-center">
-              <a href="/servicios" aria-label="Conoce nuestros servicios">
+              <Link href="/servicios" aria-label="Conoce nuestros servicios">
                 <button className="mt-10 px-8 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg shadow-lg transition duration-300">
                   Conoce nuestros servicios
                 </button>
-              </a>
+              </Link>
             </div>
           </div>
         </section>
