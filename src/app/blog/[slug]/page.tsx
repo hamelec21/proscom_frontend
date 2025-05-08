@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { ShareButton } from "@/components/ShareButton";
+import Image from 'next/image';
 
 // Interfaz del post
 interface Post {
@@ -11,7 +12,7 @@ interface Post {
   slug: string;
 }
 
-// Limpia etiquetas <p> del contenido HTML
+// Limpia las etiquetas no deseadas del contenido HTML
 function cleanBody(body: string): string {
   return body.replace(/<\/?p>/g, "");
 }
@@ -38,10 +39,8 @@ export default async function PostDetailPage({
 }: {
   params: { slug: string };
 }) {
-  // El valor de 'params' ya está disponible, no es necesario 'await'
-  const { slug } = params;
+  const { slug } = params; // Este valor proviene de la URL
 
-  // Obtiene el post según el slug
   const post = await getPost(slug);
 
   if (!post) {
@@ -56,9 +55,11 @@ export default async function PostDetailPage({
       <h1 className="text-3xl font-bold mb-6">{post.title}</h1>
 
       {post.image_url && (
-        <img
+        <Image
           src={post.image_url}
           alt={post.title}
+          width={1200}
+          height={628}
           className="w-full h-[628px] object-cover rounded mb-6"
         />
       )}
