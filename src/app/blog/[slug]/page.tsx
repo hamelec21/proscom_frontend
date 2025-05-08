@@ -1,3 +1,4 @@
+// src/app/blog/[slug]/page.tsx
 import { notFound } from "next/navigation";
 import { ShareButton } from "@/components/ShareButton";
 
@@ -19,7 +20,7 @@ function cleanBody(body: string): string {
 async function getPost(slug: string): Promise<Post | null> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${slug}`, {
-      next: { revalidate: 60 }, // Habilita ISR: se revalida cada 60 segundos
+      next: { revalidate: 60 }, // ISR
     });
 
     if (!res.ok) return null;
@@ -32,7 +33,7 @@ async function getPost(slug: string): Promise<Post | null> {
 }
 
 // Genera rutas estáticas para los slugs
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`);
     const posts: Post[] = await res.json();
@@ -46,15 +47,14 @@ export async function generateStaticParams() {
   }
 }
 
-// Permite parámetros dinámicos con ISR
-export const dynamicParams = true;
+// Página dinámica de detalle del post
+type PostDetailPageProps = {
+  params: {
+    slug: string;
+  };
+};
 
-// Página de detalle del post
-export default async function PostDetailPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default async function PostDetailPage({ params }: PostDetailPageProps) {
   const post = await getPost(params.slug);
 
   if (!post) {
