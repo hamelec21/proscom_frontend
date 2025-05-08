@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import Image from "next/image"; 
-import Link from "next/link"; 
+import Image from "next/image";
+import Link from "next/link";
 
 interface Post {
   id: number;
@@ -25,15 +25,10 @@ const TodosLosPosts = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isClient, setIsClient] = useState(false);
 
   const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<number | "">("");
   const [currentPage, setCurrentPage] = useState(1);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -69,15 +64,12 @@ const TodosLosPosts = () => {
     fetchCategories();
   }, []);
 
-  if (!isClient) {
-    return null; // Solo renderiza el componente en el cliente
-  }
-
   const filteredPosts = posts.filter((post) => {
-    const matchCategory = selectedCategory
-      ? post.category_id === parseInt(selectedCategory)
-      : true;
-    const matchSearch = post.title.toLowerCase().includes(search.toLowerCase());
+    const matchCategory =
+      selectedCategory === "" || post.category_id === selectedCategory;
+    const matchSearch = post.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
     return matchCategory && matchSearch;
   });
 
@@ -96,7 +88,7 @@ const TodosLosPosts = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="loader"></div> {/* Asegúrate de tener el estilo adecuado para el loader */}
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
       </div>
     );
   }
@@ -139,7 +131,8 @@ const TodosLosPosts = () => {
             <select
               value={selectedCategory}
               onChange={(e) => {
-                setSelectedCategory(e.target.value);
+                const value = e.target.value;
+                setSelectedCategory(value === "" ? "" : parseInt(value));
                 setCurrentPage(1);
               }}
               className="border px-3 py-2 rounded w-full md:w-1/3"
@@ -163,7 +156,7 @@ const TodosLosPosts = () => {
           {/* Posts */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {paginatedPosts.map((post) => (
-              <div
+              <article
                 key={post.id}
                 className="bg-white rounded-lg shadow-lg overflow-hidden"
               >
@@ -171,9 +164,10 @@ const TodosLosPosts = () => {
                   <Image
                     src={post.image_url}
                     alt={`Imagen del post ${post.title}`}
-                    width={500} // Ajusta el ancho según sea necesario
-                    height={300} // Ajusta la altura según sea necesario
+                    width={500}
+                    height={300}
                     className="w-full h-48 object-cover"
+                    unoptimized // Quita esto si usas dominio en next.config.js
                   />
                 )}
                 <div className="p-6 text-left">
@@ -190,7 +184,7 @@ const TodosLosPosts = () => {
                     Leer más
                   </Link>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
 

@@ -2,12 +2,13 @@
   "name": "proscom_frontend",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
+ "scripts": {
+  "dev": "ts-node server.ts",
+  "build": "next build",
+  "start": "NODE_ENV=production ts-node server.ts",
+  "lint": "next lint"
+}
+,
   "dependencies": {
     "aos": "^2.3.4",
     "framer-motion": "^12.7.4",
