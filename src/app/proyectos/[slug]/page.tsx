@@ -33,6 +33,9 @@ export default async function ProyectoDetailPage({ params }: { params: { slug: s
     notFound();
   }
 
+  // Imagen por defecto en caso de que no haya imagen en el proyecto
+  const defaultImage = "/default-image.jpg";
+
   return (
     <>
       <Head>
@@ -40,25 +43,27 @@ export default async function ProyectoDetailPage({ params }: { params: { slug: s
         <meta name="description" content={proyecto.description} />
         <meta property="og:title" content={proyecto.title} />
         <meta property="og:description" content={proyecto.description} />
-        {proyecto.image_url && (
-          <meta property="og:image" content={proyecto.image_url} />
-        )}
+        <meta property="og:image" content={proyecto.image_url || defaultImage} />
         <meta property="og:type" content="website" />
         <meta name="twitter:title" content={proyecto.title} />
         <meta name="twitter:description" content={proyecto.description} />
-        {proyecto.image_url && (
-          <meta name="twitter:image" content={proyecto.image_url} />
-        )}
+        <meta name="twitter:image" content={proyecto.image_url || defaultImage} />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
 
       <section className="max-w-4xl mx-auto py-10 px-4">
         <h1 className="text-3xl font-bold mb-6">{proyecto.title}</h1>
 
-        {proyecto.image_url && (
+        {proyecto.image_url ? (
           <img
             src={proyecto.image_url}
             alt={proyecto.title}
+            className="w-full h-64 object-cover rounded mb-6"
+          />
+        ) : (
+          <img
+            src={defaultImage}
+            alt="Imagen predeterminada"
             className="w-full h-64 object-cover rounded mb-6"
           />
         )}
