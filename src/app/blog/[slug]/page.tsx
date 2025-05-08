@@ -1,6 +1,6 @@
+import React from "react";
 import { notFound } from "next/navigation";
 import { ShareButton } from "@/components/ShareButton";
-import Image from 'next/image';
 
 // Interfaz del post
 interface Post {
@@ -12,12 +12,12 @@ interface Post {
   slug: string;
 }
 
-// Limpia las etiquetas no deseadas del contenido HTML
+// Limpia las etiquetas <p> del contenido HTML
 function cleanBody(body: string): string {
   return body.replace(/<\/?p>/g, "");
 }
 
-// Obtiene un post específico por su slug
+// Función para obtener el post desde la API usando el slug
 async function getPost(slug: string): Promise<Post | null> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${slug}`, {
@@ -39,15 +39,17 @@ export default async function PostDetailPage({
 }: {
   params: { slug: string };
 }) {
-  const { slug } = params; // Este valor proviene de la URL
+  const { slug } = params; // Extraemos el slug de los params
 
+  // Obtenemos el post usando el slug
   const post = await getPost(slug);
 
   if (!post) {
-    notFound(); // Si no se encuentra el post, redirige a la página 404
+    notFound(); // Si el post no existe, redirige a la página 404
     return null;
   }
 
+  // Limpiar el contenido HTML del post
   const cleanContent = cleanBody(post.body);
 
   return (
@@ -55,11 +57,9 @@ export default async function PostDetailPage({
       <h1 className="text-3xl font-bold mb-6">{post.title}</h1>
 
       {post.image_url && (
-        <Image
+        <img
           src={post.image_url}
           alt={post.title}
-          width={1200}
-          height={628}
           className="w-full h-[628px] object-cover rounded mb-6"
         />
       )}
