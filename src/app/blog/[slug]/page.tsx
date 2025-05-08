@@ -46,7 +46,7 @@ export const generateStaticParams = async () => {
 export default async function PostDetailPage({
   params,
 }: {
-  params: { slug: string };
+  params: { slug: string };  // Asegúrate de que params sea un objeto con slug
 }) {
   // Obtiene el post según el slug
   const post = await getPost(params.slug);
