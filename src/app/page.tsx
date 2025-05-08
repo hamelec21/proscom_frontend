@@ -128,7 +128,7 @@ export default function Home() {
         <section id="blog" className="py-20 px-6 bg-gray-100">
           <UltimosPosts />
         </section>
-
+        <UltimosPosts />
         {/* Sección de últimos proyectos */}
         <section id="proyectos" className="py-20 px-6 bg-white">
           <UltimosProyectos />
