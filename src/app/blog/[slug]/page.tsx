@@ -30,48 +30,21 @@ async function getPost(slug: string): Promise<Post | null> {
   }
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export async function getServerSideProps({ params }: { params: { slug: string } }) {
   const post = await getPost(params.slug);
 
   if (!post) {
-    notFound();
+    return { notFound: true };
   }
 
   return {
-    title: `${post.title} | Mi Blog`,
-    description: post.excerpt,
-    openGraph: {
-      title: post.title,
-      description: post.excerpt,
-      images: post.image_url ? [post.image_url] : [],
-      type: "article",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: post.title,
-      description: post.excerpt,
-      images: post.image_url ? [post.image_url] : [],
+    props: {
+      post,
     },
   };
 }
 
-// Asegurarse de que los params estén tipados correctamente
-export default async function PostDetailPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const post = await getPost(params.slug);
-
-  if (!post) {
-    notFound();
-    return null;
-  }
-
+export default function PostDetailPage({ post }: { post: Post }) {
   // Limpiar el contenido si es necesario
   const cleanContent = cleanBody(post.body);
 
