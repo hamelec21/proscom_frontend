@@ -89,10 +89,11 @@ const UltimosPosts: React.FC = () => {
         </div>
 
         <div className="mt-10">
-          <Link href="/blog">
-            <span className="px-8 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg shadow-lg transition duration-300 inline-block">
-              Ver todos los artículos
-            </span>
+          <Link
+            href="/blog"
+            className="px-8 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg shadow-lg transition duration-300 inline-block"
+          >
+            Ver todos los artículos
           </Link>
         </div>
       </div>
