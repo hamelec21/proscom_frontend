@@ -1,6 +1,6 @@
-import React from "react";
 import { notFound } from "next/navigation";
 import { ShareButton } from "@/components/ShareButton";
+import { Metadata } from "next";
 
 // Interfaz del post
 interface Post {
@@ -12,23 +12,16 @@ interface Post {
   slug: string;
 }
 
-// Interfaz de los props (✅ aquí está la corrección clave)
-interface PostDetailPageProps {
-  params: {
-    slug: string;
-  };
-}
-
-// Limpia las etiquetas <p> del contenido HTML
+// Limpia el contenido
 function cleanBody(body: string): string {
   return body.replace(/<\/?p>/g, "");
 }
 
-// Función para obtener el post desde la API usando el slug
+// Fetch
 async function getPost(slug: string): Promise<Post | null> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${slug}`, {
-      next: { revalidate: 60 }, // ISR
+      next: { revalidate: 60 },
     });
 
     if (!res.ok) return null;
@@ -40,14 +33,26 @@ async function getPost(slug: string): Promise<Post | null> {
   }
 }
 
-// Página dinámica de detalle del post
-export default async function PostDetailPage({ params }: PostDetailPageProps) {
-  const { slug } = params;
+// Props para los params de slug
+type Props = {
+  params: { slug: string };
+};
 
-  const post = await getPost(slug);
+// Metadatos dinámicos (opcional)
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const post = await getPost(params.slug);
+  return {
+    title: post?.title || "Post no encontrado",
+    description: post?.excerpt || "",
+  };
+}
+
+// Página de detalle del post
+export default async function PostDetailPage({ params }: Props) {
+  const post = await getPost(params.slug);
 
   if (!post) {
-    notFound();
+    notFound(); // Si el post no existe, redirige a la página 404
     return null;
   }
 
@@ -74,4 +79,3 @@ export default async function PostDetailPage({ params }: PostDetailPageProps) {
     </section>
   );
 }
-
