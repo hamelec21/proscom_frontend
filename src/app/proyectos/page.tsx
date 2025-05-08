@@ -133,15 +133,18 @@ const TodosLosProyectos = () => {
                         className="text-blue-600 hover:underline"
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label={`Ver proyecto externo ${proyecto.title}`}
                       >
                         Ver externo
                       </a>
                     )}
-                    <Link
-                      href={`/proyectos/${proyecto.slug}`}
-                      className="inline-block px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-900 transition"
-                    >
-                      Ver Detalles
+                    <Link href={`/proyectos/${proyecto.slug}`}>
+                      <a
+                        className="inline-block px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-900 transition"
+                        aria-label={`Ver detalles del proyecto ${proyecto.title}`}
+                      >
+                        Ver Detalles
+                      </a>
                     </Link>
                   </div>
                 </div>
