@@ -55,7 +55,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function PostDetailPage({ params }: { params: { slug: string } }) {
+// Ensure the params are typed as expected
+export default async function PostDetailPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
   const post = await getPost(params.slug);
 
   if (!post) {
