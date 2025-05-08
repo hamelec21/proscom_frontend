@@ -1,7 +1,7 @@
-// app/blog/[slug]/page.tsx
-import { notFound } from 'next/navigation';
-import { ShareButton } from '@/components/ShareButton';
+import { notFound } from "next/navigation";
+import { ShareButton } from "@/components/ShareButton";
 
+// Interfaz del post
 interface Post {
   id: number;
   title: string;
@@ -11,34 +11,38 @@ interface Post {
   slug: string;
 }
 
-// Función para limpiar el contenido del post (por ejemplo, etiquetas <p>)
+// Limpia etiquetas <p> del contenido HTML
 function cleanBody(body: string): string {
   return body.replace(/<\/?p>/g, "");
 }
 
-// Función para obtener el post desde la API
+// Obtiene un post específico por su slug
 async function getPost(slug: string): Promise<Post | null> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${slug}`, {
-      next: { revalidate: 60 }, // ISR (Incremental Static Regeneration)
+      next: { revalidate: 60 }, // ISR
     });
 
     if (!res.ok) return null;
 
     return res.json();
   } catch (error) {
-    console.error('Error al obtener el post:', error);
+    console.error("Error al obtener el post:", error);
     return null;
   }
 }
 
-// Página de detalle del post
+// Página dinámica de detalle del post
 export default async function PostDetailPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const post = await getPost(params.slug); // Aquí usamos el slug desde params
+  // Esperamos a que los params se resuelvan
+  const { slug } = await params; // Esto asegura que los parámetros son resueltos antes de ser utilizados.
+
+  // Obtiene el post según el slug
+  const post = await getPost(slug);
 
   if (!post) {
     notFound(); // Si no se encuentra el post, redirige a la página 404
