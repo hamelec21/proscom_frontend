@@ -15,6 +15,7 @@ function cleanBody(body: string): string {
   return body.replace(/<\/?p>/g, ""); // elimina solo las etiquetas <p> y </p>
 }
 
+// Función para obtener el post
 async function getPost(slug: string): Promise<Post | null> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${slug}`, {
@@ -30,7 +31,7 @@ async function getPost(slug: string): Promise<Post | null> {
   }
 }
 
-// Se obtiene el post directamente dentro de la página
+// Página para el detalle del post
 export default async function PostDetailPage({
   params,
 }: {
@@ -39,7 +40,7 @@ export default async function PostDetailPage({
   const post = await getPost(params.slug);
 
   if (!post) {
-    notFound();
+    notFound(); // Si no se encuentra el post, se redirige a una página 404
     return null;
   }
 
