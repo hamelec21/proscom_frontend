@@ -18,7 +18,7 @@ function cleanBody(body: string): string {
 async function getPost(slug: string): Promise<Post | null> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${slug}`, {
-      cache: "no-store",
+      cache: "no-store",  // Desactiva la caché si es necesario
     });
 
     if (!res.ok) return null;
@@ -30,21 +30,19 @@ async function getPost(slug: string): Promise<Post | null> {
   }
 }
 
-export async function getServerSideProps({ params }: { params: { slug: string } }) {
+// Se obtiene el post directamente dentro de la página
+export default async function PostDetailPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
   const post = await getPost(params.slug);
 
   if (!post) {
-    return { notFound: true };
+    notFound();
+    return null;
   }
 
-  return {
-    props: {
-      post,
-    },
-  };
-}
-
-export default function PostDetailPage({ post }: { post: Post }) {
   // Limpiar el contenido si es necesario
   const cleanContent = cleanBody(post.body);
 
