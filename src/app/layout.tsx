@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="es">
       <body className={`${poppins.variable} bg-gray-50 text-gray-800`}>
         <Navbar />
-        <UltimosPosts />
+        
         {children}
         <Footer />
       </body>
