@@ -20,7 +20,7 @@ function cleanBody(body: string): string {
 async function getPost(slug: string): Promise<Post | null> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${slug}`, {
-      next: { revalidate: 60 }, // ISR
+      next: { revalidate: 60 }, // ISR (Incremental Static Regeneration)
     });
 
     if (!res.ok) return null;
@@ -31,6 +31,16 @@ async function getPost(slug: string): Promise<Post | null> {
     return null;
   }
 }
+
+// Generación de parámetros estáticos para las rutas dinámicas
+export const generateStaticParams = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`);
+  const posts: Post[] = await res.json();
+
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
+};
 
 // Página dinámica de detalle del post
 export default async function PostDetailPage({
