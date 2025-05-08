@@ -6,6 +6,7 @@ import AosInit from "@/components/AosInit";
 import UltimosPosts from "@/components/UltimosPosts";
 import UltimosProyectos from "@/components/UltimosProyectos";
 import Clientes from "@/components/ClientLogos";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 const Slider = dynamic(() => import("@/components/Slider"), { ssr: false });
@@ -77,11 +78,11 @@ export default function Home() {
 
             {/* Botón Call to Action */}
             <div className="flex justify-center">
-              <a href="/nosotros" aria-label="Conocer más sobre nosotros">
+              <Link href="/nosotros" aria-label="Conocer más sobre nosotros">
                 <button className="mt-4 px-8 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg shadow-lg transition duration-300">
                   Conoce más sobre nosotros
                 </button>
-              </a>
+              </Link>
             </div>
           </div>
         </section>
@@ -126,11 +127,11 @@ export default function Home() {
         <section id="proyectos" className="py-20 px-6 bg-white">
           <UltimosProyectos />
         </section>
- {/* Aquí van los Clientes */}
+
+        {/* Aquí van los Clientes */}
         <section id="clientes" className="py-20 px-6 bg-gray-100">
           <div className="max-w-6xl mx-auto text-center">
-           
-            <Clientes />  
+            <Clientes />
           </div>
         </section>
       
