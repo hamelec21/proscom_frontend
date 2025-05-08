@@ -77,11 +77,10 @@ const UltimosPosts: React.FC = () => {
                     ? `${post.excerpt.slice(0, 65)}...`
                     : post.excerpt}
                 </p>
-                <Link
-                  href={`/blog/${post.slug}`}
-                  className="text-blue-600 hover:underline"
-                >
-                  Leer más
+                <Link href={`/blog/${post.slug}`}>
+                  <span className="text-blue-600 hover:underline">
+                    Leer más
+                  </span>
                 </Link>
               </div>
             </div>
@@ -89,11 +88,10 @@ const UltimosPosts: React.FC = () => {
         </div>
 
         <div className="mt-10">
-          <Link
-            href="/blog"
-            className="px-8 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg shadow-lg transition duration-300"
-          >
-            Ver todos los artículos
+          <Link href="/blog">
+            <span className="px-8 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-lg shadow-lg transition duration-300 inline-block">
+              Ver todos los artículos
+            </span>
           </Link>
         </div>
       </div>
