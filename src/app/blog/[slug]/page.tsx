@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { ShareButton } from "@/components/ShareButton";
 
+// Interfaz del post
 interface Post {
   id: number;
   title: string;
@@ -10,17 +11,20 @@ interface Post {
   slug: string;
 }
 
+// Limpia etiquetas <p> del contenido HTML
 function cleanBody(body: string): string {
   return body.replace(/<\/?p>/g, "");
 }
 
+// Obtiene un post específico por su slug
 async function getPost(slug: string): Promise<Post | null> {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${slug}`, {
-      next: { revalidate: 60 },
+      next: { revalidate: 60 }, // ISR
     });
 
     if (!res.ok) return null;
+
     return res.json();
   } catch (error) {
     console.error("Error al obtener el post:", error);
@@ -28,21 +32,20 @@ async function getPost(slug: string): Promise<Post | null> {
   }
 }
 
-export async function getServerSideProps({ params }: { params: { slug: string } }) {
+// Página dinámica de detalle del post
+export default async function PostDetailPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  // Obtiene el post según el slug
   const post = await getPost(params.slug);
 
   if (!post) {
-    return { notFound: true };
+    notFound(); // Si no se encuentra el post, redirige a la página 404
+    return null;
   }
 
-  return {
-    props: {
-      post,
-    },
-  };
-}
-
-export default function PostDetailPage({ post }: { post: Post }) {
   const cleanContent = cleanBody(post.body);
 
   return (
