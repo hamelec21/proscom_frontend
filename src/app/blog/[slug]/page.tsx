@@ -1,4 +1,3 @@
-// src/app/blog/[slug]/page.tsx
 import { notFound } from "next/navigation";
 import { ShareButton } from "@/components/ShareButton";
 
