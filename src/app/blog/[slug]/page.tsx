@@ -10,9 +10,9 @@ interface Post {
   slug: string;
 }
 
-// Función para limpiar las etiquetas <p> de body (si quieres dejarla)
+// Función para limpiar las etiquetas <p> del body (si se desea)
 function cleanBody(body: string): string {
-  return body.replace(/<\/?p>/g, ""); // elimina solo <p> y </p>
+  return body.replace(/<\/?p>/g, ""); // elimina solo las etiquetas <p> y </p>
 }
 
 async function getPost(slug: string): Promise<Post | null> {
@@ -25,12 +25,16 @@ async function getPost(slug: string): Promise<Post | null> {
 
     return res.json();
   } catch (error) {
-    console.error("Error fetching post:", error);
+    console.error("Error al obtener el post:", error);
     return null;
   }
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
   const post = await getPost(params.slug);
 
   if (!post) {
@@ -55,7 +59,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-// Ensure the params are typed as expected
+// Asegurarse de que los params estén tipados correctamente
 export default async function PostDetailPage({
   params,
 }: {
@@ -68,7 +72,7 @@ export default async function PostDetailPage({
     return null;
   }
 
-  // Puedes seguir limpiando si quieres
+  // Limpiar el contenido si es necesario
   const cleanContent = cleanBody(post.body);
 
   return (
@@ -83,13 +87,13 @@ export default async function PostDetailPage({
         />
       )}
 
-      {/* Aquí renderizamos el HTML del body */}
+      {/* Renderizar el contenido del body */}
       <article
         className="text-lg text-gray-700 mb-6 prose prose-lg max-w-none text-justify"
         dangerouslySetInnerHTML={{ __html: cleanContent }}
       />
 
-      {/* Botón de compartir */}
+      {/* Botón para compartir */}
       <ShareButton title={post.title} excerpt={post.excerpt} slug={post.slug} />
     </section>
   );
