@@ -19,7 +19,9 @@ const UltimosPosts: React.FC = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/posts`
+        );
         if (!response.ok) {
           throw new Error("Error al obtener los posts");
         }
@@ -54,7 +56,10 @@ const UltimosPosts: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {posts.map((post) => (
-            <div key={post.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div
+              key={post.id}
+              className="bg-white rounded-lg shadow-lg overflow-hidden"
+            >
               {post.image_url && (
                 <div className="relative w-full h-48">
                   <Image
