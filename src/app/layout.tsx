@@ -3,8 +3,6 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/footer";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import UltimosPosts from "@/components/UltimosPosts";
-
 const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
