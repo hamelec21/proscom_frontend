@@ -22,12 +22,16 @@ const TodosLosProyectos = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [isClient, setIsClient] = useState(false);
 
-  // Función para obtener los proyectos
   useEffect(() => {
+    setIsClient(true); // Establecer el estado después de que el componente se haya montado en el cliente
+
     const fetchProyectos = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/projects`);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/projects`
+        );
         if (!response.ok) {
           throw new Error("Error al obtener los proyectos");
         }
@@ -63,6 +67,11 @@ const TodosLosProyectos = () => {
     }
   };
 
+  // Si no es cliente, no mostrar el contenido
+  if (!isClient) {
+    return null;
+  }
+
   // Cargando
   if (loading) {
     return (
@@ -76,7 +85,10 @@ const TodosLosProyectos = () => {
     <>
       <Head>
         <title>Proyectos</title>
-        <meta name="description" content="Conoce nuestros proyectos realizados con éxito." />
+        <meta
+          name="description"
+          content="Conoce nuestros proyectos realizados con éxito."
+        />
       </Head>
 
       <section id="proyectos" className="py-20 px-6 bg-white">
@@ -122,29 +134,19 @@ const TodosLosProyectos = () => {
                   />
                 )}
                 <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-4">{proyecto.title}</h3>
+                  <h3 className="text-xl font-semibold mb-4">
+                    {proyecto.title}
+                  </h3>
                   <p className="text-gray-700 mb-4 line-clamp-3">
                     {proyecto.description}
                   </p>
                   <div className="flex flex-col gap-2 md:flex-row md:justify-between">
-                    {proyecto.link && (
-                      <a
-                        href={proyecto.link}
-                        className="text-blue-600 hover:underline"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`Ver proyecto externo ${proyecto.title}`}
-                      >
-                        Ver externo
-                      </a>
-                    )}
-                    <Link href={`/proyectos/${proyecto.slug}`}>
-                      <a
-                        className="inline-block px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-900 transition"
-                        aria-label={`Ver detalles del proyecto ${proyecto.title}`}
-                      >
-                        Ver Detalles
-                      </a>
+                    <Link
+                      href={`/proyectos/${proyecto.slug}`}
+                      className="inline-block px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-900 transition"
+                      aria-label={`Ver detalles del proyecto ${proyecto.title}`}
+                    >
+                      Ver Detalles
                     </Link>
                   </div>
                 </div>
