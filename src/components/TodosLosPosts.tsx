@@ -1,11 +1,10 @@
-"use client";
+"use client"; // Indicamos que este es un componente cliente
 
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
-import Image from "next/image"; // Importamos el componente Image
-import Link from "next/link"; // Importamos Link para la navegación
+import Image from "next/image"; 
+import Link from "next/link"; 
 
-// Definimos las interfaces para los tipos de datos
 interface Post {
   id: number;
   title: string;
@@ -36,7 +35,6 @@ const TodosLosPosts = () => {
     setIsClient(true);
   }, []);
 
-  // Cargar posts
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -55,7 +53,6 @@ const TodosLosPosts = () => {
     fetchPosts();
   }, []);
 
-  // Cargar categorías
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -73,7 +70,7 @@ const TodosLosPosts = () => {
   }, []);
 
   if (!isClient) {
-    return null;
+    return null; // Solo renderiza el componente en el cliente
   }
 
   const filteredPosts = posts.filter((post) => {
@@ -99,8 +96,7 @@ const TodosLosPosts = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="loader"></div>{" "}
-        {/* Asegúrate de tener el estilo adecuado para el loader */}
+        <div className="loader"></div> {/* Asegúrate de tener el estilo adecuado para el loader */}
       </div>
     );
   }
@@ -117,13 +113,6 @@ const TodosLosPosts = () => {
           name="keywords"
           content="tecnología, ciberseguridad, blog, publicaciones, posts"
         />
-        <meta property="og:title" content="Blog - Todos los Posts" />
-        <meta
-          property="og:description"
-          content="Lee todas nuestras publicaciones sobre tecnología, ciberseguridad y más."
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="URL_DE_IMAGEN_DE_PORTADA" />
       </Head>
 
       <section id="blog" className="py-10 px-4">
