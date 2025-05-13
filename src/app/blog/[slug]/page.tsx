@@ -28,7 +28,11 @@ async function getPost(slug: string): Promise<Post | null> {
 }
 
 // Página de detalle del post
-export default async function PostDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function PostDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params; // Debes usar await para obtener el valor de slug
   const post = await getPost(slug);
 
@@ -53,7 +57,9 @@ export default async function PostDetailPage({ params }: { params: Promise<{ slu
         className="text-lg text-gray-700 mb-6 prose prose-lg max-w-none text-justify"
         dangerouslySetInnerHTML={{ __html: cleanContent }}
       />
-      <ShareButton title={post.title} excerpt={post.excerpt} slug={slug} />
+      {/* 
+  <ShareButton title={post.title} excerpt={post.excerpt} slug={slug} />
+*/}
     </section>
   );
 }
