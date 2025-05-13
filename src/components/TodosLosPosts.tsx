@@ -66,7 +66,7 @@ const TodosLosPosts = () => {
 
   const filteredPosts = posts.filter((post) => {
     const matchCategory =
-      selectedCategory === "" || post.category_id === selectedCategory;
+      selectedCategory === "" || Number(post.category_id) === selectedCategory; // Corregido aquí para asegurar que sea numérico
     const matchSearch = post.title
       .toLowerCase()
       .includes(search.toLowerCase());
