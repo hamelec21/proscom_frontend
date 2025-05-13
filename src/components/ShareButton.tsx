@@ -1,11 +1,9 @@
 "use client";
-
-import { useState } from "react";
 interface ShareButtonProps {
   title: string;
   excerpt: string;
   slug: string;
-  image: string; // Añadido el prop para la imagen
+  image?: string; // Hacemos que el prop sea opcional
 }
 
 export function ShareButton({ title, excerpt, slug, image }: ShareButtonProps) {
@@ -13,11 +11,18 @@ export function ShareButton({ title, excerpt, slug, image }: ShareButtonProps) {
 
   const shareUrl = `${process.env.NEXT_PUBLIC_SHARE_URL}/blog/${slug}`;
 
-  // URLs de compartir en redes sociales
-  const facebookShare = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
-  const twitterShare = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(`${title} - ${excerpt}`)}`;
-  const linkedinShare = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
-  const whatsappShare = `https://api.whatsapp.com/send?text=${encodeURIComponent(`${title}\n\n${excerpt}\n\n${shareUrl}`)}`;
+  const facebookShare = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+    shareUrl
+  )}`;
+  const twitterShare = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+    shareUrl
+  )}&text=${encodeURIComponent(`${title} - ${excerpt}`)}`;
+  const linkedinShare = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+    shareUrl
+  )}`;
+  const whatsappShare = `https://api.whatsapp.com/send?text=${encodeURIComponent(
+    `${title}\n\n${excerpt}\n\n${shareUrl}`
+  )}`;
 
   const handleCopyUrl = () => {
     navigator.clipboard
@@ -33,15 +38,12 @@ export function ShareButton({ title, excerpt, slug, image }: ShareButtonProps) {
 
   return (
     <div className="flex flex-col items-center gap-4 mt-8">
-      {/* Vista previa del contenido a compartir */}
       <div className="max-w-xl text-center bg-white shadow p-4 rounded">
         <h3 className="text-xl font-semibold mb-2">{title}</h3>
         <p className="text-gray-600 text-sm">{excerpt}</p>
-        {/* Mostrar imagen */}
         {image && <img src={image} alt={title} className="mt-4 rounded" />}
       </div>
 
-      {/* Botones de redes sociales */}
       <div className="flex flex-wrap gap-4 justify-center">
         <a
           href={facebookShare}
