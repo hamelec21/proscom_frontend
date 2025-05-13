@@ -1,15 +1,19 @@
 "use client";
+
+import { useState } from "react";
+
 interface ShareButtonProps {
   title: string;
   excerpt: string;
   slug: string;
-  image?: string; // Hacemos que el prop sea opcional
 }
 
-export function ShareButton({ title, excerpt, slug, image }: ShareButtonProps) {
+export function ShareButton({ title, excerpt, slug }: ShareButtonProps) {
   const [copied, setCopied] = useState(false);
 
   const shareUrl = `${process.env.NEXT_PUBLIC_SHARE_URL}/blog/${slug}`;
+
+  console.log(shareUrl);
 
   const facebookShare = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
     shareUrl
@@ -38,12 +42,13 @@ export function ShareButton({ title, excerpt, slug, image }: ShareButtonProps) {
 
   return (
     <div className="flex flex-col items-center gap-4 mt-8">
+      {/* Vista previa del contenido a compartir */}
       <div className="max-w-xl text-center bg-white shadow p-4 rounded">
         <h3 className="text-xl font-semibold mb-2">{title}</h3>
         <p className="text-gray-600 text-sm">{excerpt}</p>
-        {image && <img src={image} alt={title} className="mt-4 rounded" />}
       </div>
 
+      {/* Botones de redes sociales */}
       <div className="flex flex-wrap gap-4 justify-center">
         <a
           href={facebookShare}
