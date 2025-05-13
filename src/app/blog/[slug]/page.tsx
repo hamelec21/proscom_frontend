@@ -57,9 +57,8 @@ export default async function PostDetailPage({
         className="text-lg text-gray-700 mb-6 prose prose-lg max-w-none text-justify"
         dangerouslySetInnerHTML={{ __html: cleanContent }}
       />
-      {/* 
-  <ShareButton title={post.title} excerpt={post.excerpt} slug={slug} />
-*/}
+
+      <ShareButton title={post.title} excerpt={post.excerpt} slug={slug} />
     </section>
   );
 }
