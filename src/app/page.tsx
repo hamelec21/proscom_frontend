@@ -79,7 +79,13 @@ export default function Home() {
               </h1>
             </header>
             <p className="text-lg md:text-xl mb-8 leading-relaxed text-justify">
-              En Proscom, creemos que cada proyecto nace de una idea poderosa, una visión que merece avanzar con seguridad, confianza y respaldo real. Somos una empresa especializada en desarrollo tecnológico y soluciones en ciberseguridad, creada para acompañar a emprendedores, startups y empresas en la construcción de su futuro digital sin poner en riesgo lo más importante: su información, su reputación y su crecimiento.
+              En Proscom, creemos que cada proyecto nace de una idea poderosa,
+              una visión que merece avanzar con seguridad, confianza y respaldo
+              real. Somos una empresa especializada en desarrollo tecnológico y
+              soluciones en ciberseguridad, creada para acompañar a
+              emprendedores, startups y empresas en la construcción de su futuro
+              digital sin poner en riesgo lo más importante: su información, su
+              reputación y su crecimiento.
             </p>
 
             <div className="flex justify-center">
@@ -95,7 +101,6 @@ export default function Home() {
         {/* Sección ¿Por qué elegirnos? */}
         <section
           className="relative bg-cover bg-center bg-no-repeat py-20 px-6 text-[#2c3e50]"
-          style={{ backgroundImage: "url('/img/banner-home.jpg')" }}
           data-aos="fade-right"
           aria-label="Razones para elegir Proscom"
         >
@@ -107,11 +112,16 @@ export default function Home() {
               </h2>
             </header>
             <p className="text-lg md:text-xl leading-relaxed text-[#2c3e50] text-justify">
-              En <strong>Proscom</strong>, entendemos que cada negocio es único. Por eso, ofrecemos soluciones digitales diseñadas a medida, alineadas a tus objetivos y procesos.
+              En <strong>Proscom</strong>, entendemos que cada negocio es único.
+              Por eso, ofrecemos soluciones digitales diseñadas a medida,
+              alineadas a tus objetivos y procesos.
               <br className="hidden md:block" />
-              Nuestro equipo combina innovación, seguridad y experiencia para ayudarte a crecer de forma sostenible y confiable.
+              Nuestro equipo combina innovación, seguridad y experiencia para
+              ayudarte a crecer de forma sostenible y confiable.
               <br className="hidden md:block" />
-              Desde el desarrollo de software hasta la consultoría tecnológica, estamos aquí para llevar tu empresa al siguiente nivel con herramientas inteligentes y un enfoque humano.
+              Desde el desarrollo de software hasta la consultoría tecnológica,
+              estamos aquí para llevar tu empresa al siguiente nivel con
+              herramientas inteligentes y un enfoque humano.
             </p>
 
             <div className="flex justify-center">
@@ -128,7 +138,7 @@ export default function Home() {
         <section id="blog" className="py-20 px-6 bg-gray-100">
           <UltimosPosts />
         </section>
-       
+
         {/* Sección de últimos proyectos */}
         <section id="proyectos" className="py-20 px-6 bg-white">
           <UltimosProyectos />
