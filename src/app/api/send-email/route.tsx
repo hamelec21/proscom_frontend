@@ -46,7 +46,7 @@ export async function POST(req: Request) {
 
     const mailOptions = {
       from: `"${name}" <${process.env.EMAIL_USER}>`, // 👈 usar el correo autenticado
-      to: "tucorreo@dominio.com", // Cambia al destinatario final
+      to: "jcornejo@proscom.cl", // Cambia al destinatario final
       subject: `Nuevo mensaje de contacto de ${name}`,
       text: `Nombre: ${name}\nCorreo: ${email}\nMensaje:\n${message}`,
     };
