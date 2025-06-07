@@ -15,7 +15,7 @@ function cleanBody(body: string): string {
 }
 
 async function getPost(slug: string): Promise<Post | null> {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${slug}`, {
+  const res = await fetch(`https://panel.jrdeveloper.cl/api/posts/${slug}`, {
     next: { revalidate: 60 },
   });
 
