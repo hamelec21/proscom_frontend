@@ -1,6 +1,7 @@
 // app/blog/[slug]/page.tsx
 
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { ShareButton } from "@/components/ShareButton";
 
 interface Post {
@@ -21,7 +22,7 @@ async function getPost(slug: string): Promise<Post | null> {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/posts/${slug}`,
       {
-        next: { revalidate: 60 }, // ISR: revalida cada 60 segundos
+        next: { revalidate: 60 },
       }
     );
 
@@ -39,7 +40,6 @@ export default async function PostDetailPage({
   params: { slug: string };
 }) {
   const { slug } = params;
-
   const post = await getPost(slug);
 
   if (!post) {
@@ -54,10 +54,13 @@ export default async function PostDetailPage({
       <h1 className="text-3xl font-bold mb-6">{post.title}</h1>
 
       {post.image_url && (
-        <img
+        <Image
           src={post.image_url}
           alt={post.title}
-          className="w-full h-[628px] object-cover rounded mb-6"
+          width={1200}
+          height={628}
+          className="w-full h-auto object-cover rounded mb-6"
+          priority // Opcional: carga prioritaria para LCP rápido
         />
       )}
 
