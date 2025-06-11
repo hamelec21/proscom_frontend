@@ -1,4 +1,4 @@
-"use client"; // Indicamos que este es un componente cliente
+"use client";
 
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
@@ -10,24 +10,21 @@ interface Post {
   title: string;
   excerpt: string;
   image_url?: string;
-  category_id: number;
+  // category_id: number; // Puedes eliminar si no usas
   slug: string;
 }
 
-interface Category {
-  id: number;
-  name: string;
-}
+/* Ya no necesitas la interface Category ni estado de categories */
 
 const POSTS_PER_PAGE = 12;
 
 const TodosLosPosts = () => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  // const [categories, setCategories] = useState<Category[]>([]); // Eliminar
   const [loading, setLoading] = useState(true);
 
   const [search, setSearch] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState<number | "">("");
+  // const [selectedCategory, setSelectedCategory] = useState<number | "">(""); // Eliminar
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -48,28 +45,12 @@ const TodosLosPosts = () => {
     fetchPosts();
   }, []);
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/categories`
-        );
-        const data: Category[] = await response.json();
-        setCategories(data);
-      } catch (error) {
-        console.error("Error al obtener las categorías:", error);
-      }
-    };
+  /* Elimina también el useEffect que cargaba categorías */
 
-    fetchCategories();
-  }, []);
-
-  const filteredPosts = posts.filter((post) => {
-    const matchCategory =
-      selectedCategory === "" || post.category_id === selectedCategory;
-    const matchSearch = post.title.toLowerCase().includes(search.toLowerCase());
-    return matchCategory && matchSearch;
-  });
+  // Cambia el filtrado a solo buscar por título
+  const filteredPosts = posts.filter((post) =>
+    post.title.toLowerCase().includes(search.toLowerCase())
+  );
 
   const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
   const paginatedPosts = filteredPosts.slice(
@@ -123,25 +104,10 @@ const TodosLosPosts = () => {
                 setSearch(e.target.value);
                 setCurrentPage(1);
               }}
-              className="border px-3 py-2 rounded w-full md:w-1/2"
+              className="border px-3 py-2 rounded w-full"
             />
 
-            <select
-              value={selectedCategory}
-              onChange={(e) => {
-                const value = e.target.value;
-                setSelectedCategory(value === "" ? "" : parseInt(value));
-                setCurrentPage(1);
-              }}
-              className="border px-3 py-2 rounded w-full md:w-1/3"
-            >
-              <option value="">Todas las categorías</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
+            {/* Eliminado el select de categorías */}
           </div>
 
           {/* Sin resultados */}
@@ -165,7 +131,7 @@ const TodosLosPosts = () => {
                     width={500}
                     height={300}
                     className="w-full h-48 object-cover"
-                    unoptimized // Quita esto si usas dominio en next.config.js
+                    unoptimized
                   />
                 )}
                 <div className="p-6 text-left">
