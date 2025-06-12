@@ -10,36 +10,27 @@ interface Proyecto {
   image_url: string;
 }
 
-// Fetch un solo proyecto por slug
 async function getProyecto(slug: string): Promise<Proyecto | null> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/projects/${slug}`,
-    { cache: "no-store" }
+    {
+      cache: "no-store",
+    }
   );
-
   if (!res.ok) return null;
-
   return res.json();
 }
 
-// Fetch todos los slugs para generar rutas estáticas
-async function getAllProyectosSlugs(): Promise<{ slug: string }[]> {
+export async function generateStaticParams() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/projects`, {
     cache: "no-store",
   });
-
   if (!res.ok) return [];
 
   const proyectos: Proyecto[] = await res.json();
   return proyectos.map((p) => ({ slug: p.slug }));
 }
 
-// Genera rutas estáticas en build time
-export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  return await getAllProyectosSlugs();
-}
-
-// Metadata dinámica para SEO
 export async function generateMetadata({
   params,
 }: {
@@ -48,9 +39,7 @@ export async function generateMetadata({
   const proyecto = await getProyecto(params.slug);
 
   if (!proyecto) {
-    return {
-      title: "Proyecto no encontrado",
-    };
+    return { title: "Proyecto no encontrado" };
   }
 
   return {
@@ -59,8 +48,11 @@ export async function generateMetadata({
   };
 }
 
-// Componente de página principal para proyecto
-const ProyectoDetailPage = async ({ params }: { params: { slug: string } }) => {
+type Props = {
+  params: { slug: string };
+};
+
+const ProyectoDetailPage = async ({ params }: Props) => {
   const proyecto = await getProyecto(params.slug);
 
   if (!proyecto) {
