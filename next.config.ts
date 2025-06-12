@@ -5,8 +5,7 @@ const nextConfig: NextConfig = {
     domains: [
       "127.0.0.1",
       "localhost",
-      "panel.jrdeveloper.cl",
-      "api.jrdeveloper.cl",
+      "api-web.jrdeveloper.cl",
     ],
   },
 };
