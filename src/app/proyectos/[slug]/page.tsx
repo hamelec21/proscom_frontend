@@ -90,4 +90,18 @@ export default async function ProyectoDetailPage({
         </div>
       )}
 
-      <p className="t
+      <p className="text-lg text-gray-700 text-justify mb-8">
+        {proyecto.description}
+      </p>
+
+      <div className="mt-8">
+        <Link
+          href="/proyectos"
+          className="inline-block px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg shadow hover:bg-gray-800 transition"
+        >
+          ← Volver a todos los proyectos
+        </Link>
+      </div>
+    </section>
+  );
+}
