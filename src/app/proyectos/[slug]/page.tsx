@@ -10,6 +10,12 @@ interface Proyecto {
   image_url: string;
 }
 
+interface PageProps {
+  params: {
+    slug: string;
+  };
+}
+
 async function getProyecto(slug: string): Promise<Proyecto | null> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/projects/${slug}`,
@@ -21,11 +27,7 @@ async function getProyecto(slug: string): Promise<Proyecto | null> {
   return res.json();
 }
 
-export default async function ProyectoDetailPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
+export default async function ProyectoDetailPage({ params }: PageProps) {
   const proyecto = await getProyecto(params.slug);
 
   if (!proyecto) {
@@ -56,7 +58,7 @@ export default async function ProyectoDetailPage({
       <div className="mt-8">
         <Link
           href="/proyectos"
-          className="inline-block px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg shadow hover:bg-gray-900 transition"
+          className="inline-block px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg shadow hover:bg-gray-800 transition"
         >
           ← Volver a todos los proyectos
         </Link>
