@@ -108,7 +108,7 @@ const TodosLosProyectos = () => {
                 setSearch(e.target.value);
                 setCurrentPage(1); // Resetea a la primera página al buscar
               }}
-              className="border px-3 py-2 rounded w-full md:w-1/2"
+              className="border px-3 py-2 rounded w-full"
             />
           </div>
 
