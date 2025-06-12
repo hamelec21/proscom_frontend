@@ -21,18 +21,19 @@ async function getProyecto(slug: string): Promise<Proyecto | null> {
   return res.json();
 }
 
-export default async function ProyectoDetailPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const slug = params.slug; // params es un objeto simple, no una promesa
+interface PageProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default async function ProyectoDetailPage({ params }: PageProps) {
+  const { slug } = params;
 
   const proyecto = await getProyecto(slug);
 
   if (!proyecto) {
     notFound();
-    return null;
   }
 
   return (
