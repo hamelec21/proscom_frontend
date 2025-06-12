@@ -34,9 +34,11 @@ export async function generateStaticParams() {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: { slug: string } | Promise<{ slug: string }>;
 }) {
-  const proyecto = await getProyecto(params.slug);
+  // Si params es Promise, espera su resolución
+  const resolvedParams = await params;
+  const proyecto = await getProyecto(resolvedParams.slug);
 
   if (!proyecto) {
     return { title: "Proyecto no encontrado" };
@@ -49,11 +51,13 @@ export async function generateMetadata({
 }
 
 type Props = {
-  params: { slug: string };
+  params: { slug: string } | Promise<{ slug: string }>;
 };
 
 const ProyectoDetailPage = async ({ params }: Props) => {
-  const proyecto = await getProyecto(params.slug);
+  // Si params es Promise, espera su resolución
+  const resolvedParams = await params;
+  const proyecto = await getProyecto(resolvedParams.slug);
 
   if (!proyecto) {
     notFound();
