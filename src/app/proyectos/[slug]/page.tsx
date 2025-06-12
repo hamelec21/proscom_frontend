@@ -1,7 +1,10 @@
+// src/app/proyectos/[slug]/page.tsx
+
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
+// Define la interfaz para el proyecto
 interface Proyecto {
   id: number;
   title: string;
@@ -10,12 +13,14 @@ interface Proyecto {
   image_url: string;
 }
 
-interface PageProps {
+// Props esperados por Next.js para páginas dinámicas
+interface ProyectoDetailPageProps {
   params: {
     slug: string;
   };
 }
 
+// Función para obtener datos desde la API
 async function getProyecto(slug: string): Promise<Proyecto | null> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/projects/${slug}`,
@@ -27,7 +32,10 @@ async function getProyecto(slug: string): Promise<Proyecto | null> {
   return res.json();
 }
 
-export default async function ProyectoDetailPage({ params }: PageProps) {
+// Página del proyecto
+export default async function ProyectoDetailPage({
+  params,
+}: ProyectoDetailPageProps) {
   const proyecto = await getProyecto(params.slug);
 
   if (!proyecto) {
