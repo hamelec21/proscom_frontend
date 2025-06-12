@@ -21,13 +21,11 @@ async function getProyecto(slug: string): Promise<Proyecto | null> {
   return res.json();
 }
 
-interface PageProps {
-  params: {
-    slug: string;
-  };
-}
-
-export default async function ProyectoDetailPage({ params }: PageProps) {
+export default async function ProyectoDetailPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
   const { slug } = params;
 
   const proyecto = await getProyecto(slug);
