@@ -10,6 +10,7 @@ interface Proyecto {
   image_url: string;
 }
 
+// Fetch un solo proyecto por slug
 async function getProyecto(slug: string): Promise<Proyecto | null> {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/projects/${slug}`,
@@ -19,6 +20,45 @@ async function getProyecto(slug: string): Promise<Proyecto | null> {
   if (!res.ok) return null;
 
   return res.json();
+}
+
+// Fetch todos los slugs para generar rutas estáticas
+async function getAllProyectosSlugs(): Promise<{ slug: string }[]> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/projects`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) return [];
+
+  const proyectos: Proyecto[] = await res.json();
+  return proyectos.map((p) => ({ slug: p.slug }));
+}
+
+// Genera rutas estáticas en build time
+export async function generateStaticParams() {
+  const slugs = await getAllProyectosSlugs();
+
+  return slugs;
+}
+
+// (Opcional) Generar metadata dinámico para SEO
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const proyecto = await getProyecto(params.slug);
+
+  if (!proyecto) {
+    return {
+      title: "Proyecto no encontrado",
+    };
+  }
+
+  return {
+    title: proyecto.title,
+    description: proyecto.description,
+  };
 }
 
 export default async function ProyectoDetailPage({
@@ -50,18 +90,4 @@ export default async function ProyectoDetailPage({
         </div>
       )}
 
-      <p className="text-lg text-gray-700 text-justify mb-8">
-        {proyecto.description}
-      </p>
-
-      <div className="mt-8">
-        <Link
-          href="/proyectos"
-          className="inline-block px-6 py-3 bg-gray-900 text-white font-semibold rounded-lg shadow hover:bg-gray-800 transition"
-        >
-          ← Volver a todos los proyectos
-        </Link>
-      </div>
-    </section>
-  );
-}
+      <p className="t
