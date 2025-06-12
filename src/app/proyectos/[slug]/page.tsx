@@ -35,13 +35,11 @@ async function getAllProyectosSlugs(): Promise<{ slug: string }[]> {
 }
 
 // Genera rutas estáticas en build time
-export async function generateStaticParams() {
-  const slugs = await getAllProyectosSlugs();
-
-  return slugs;
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  return await getAllProyectosSlugs();
 }
 
-// (Opcional) Generar metadata dinámico para SEO
+// Metadata dinámica para SEO
 export async function generateMetadata({
   params,
 }: {
@@ -61,14 +59,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProyectoDetailPage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const { slug } = params;
-
-  const proyecto = await getProyecto(slug);
+// Componente de página principal para proyecto
+const ProyectoDetailPage = async ({ params }: { params: { slug: string } }) => {
+  const proyecto = await getProyecto(params.slug);
 
   if (!proyecto) {
     notFound();
@@ -104,4 +97,6 @@ export default async function ProyectoDetailPage({
       </div>
     </section>
   );
-}
+};
+
+export default ProyectoDetailPage;
